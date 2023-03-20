@@ -17,7 +17,6 @@ export class PieChartComponent implements OnInit {
 
     title = 'Pie Chart';
 
-    private g = any;
     private margin = {top: 20, right: 20, bottom: 30, left: 50};
     private width: number;
     private height: number;
