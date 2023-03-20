@@ -5,6 +5,7 @@ import * as d3Scale from 'd3-scale';
 import * as d3Shape from 'd3-shape';
 
 import {POPULATION} from '../shared';
+import {any} from 'codelyzer/util/function';
 
 @Component({
     selector: 'app-pie-chart',
@@ -16,12 +17,13 @@ export class PieChartComponent implements OnInit {
 
     title = 'Pie Chart';
 
+    private g = any;
     private margin = {top: 20, right: 20, bottom: 30, left: 50};
     private width: number;
     private height: number;
     private radius: number;
-
     private arc: any;
+    private arcs: any;
     private labelArc: any;
     private pie: any;
     private color: any;
@@ -45,7 +47,7 @@ export class PieChartComponent implements OnInit {
             .outerRadius(this.radius - 10)
             .innerRadius(0);
         this.labelArc = d3Shape.arc()
-            .outerRadius(this.radius - 40)
+            .outerRadius(this.radius - 20)
             .innerRadius(this.radius - 40);
         this.pie = d3Shape.pie()
             .sort(null)
@@ -56,22 +58,22 @@ export class PieChartComponent implements OnInit {
     }
 
     private drawPie() {
-        let g = this.svg.selectAll('.arc')
+        this.arcs = this.svg.selectAll('.arc')
             .data(this.pie(POPULATION))
-            .attr('tabindex', 0)
+            .enter()
+            .append('g')
             .on('focus', function (d) {
                 d3.select(this)
                     .attr('stroke', 'black')
                     .attr('stroke-width', 2);
             })
-            .attr('aria-describedby', (d, i) => `tooltip-${i}`)
-            .enter().append('g')
-            .attr('class', 'arc');
-        g.append('path').attr('d', this.arc)
-            .style('fill', (d: any) => this.color(d.data.age))
-            .attr('tabindex', 0)
-            .attr('aria-describedby', (d, i) => `tooltip-${i}`);
-        g.append('text').attr('transform', (d: any) => 'translate(' + this.labelArc.centroid(d) + ')')
+            .on('blur', function(d, i) {
+                d3.select(this)
+                    .attr('stroke', null);
+            });
+        this.arcs.append('path').attr('d', this.arc)
+            .style('fill', (d: any) => this.color(d.data.age)); // paint arc
+        this.arcs.append('text').attr('transform', (d: any) => 'translate(' + this.labelArc.centroid(d) + ')')
             .attr('dy', '.35em')
             .text((d: any) => d.data.age);
     }
