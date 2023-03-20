@@ -1,10 +1,10 @@
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import {Component, ViewEncapsulation, OnInit} from '@angular/core';
 
 import * as d3 from 'd3-selection';
 import * as d3Scale from 'd3-scale';
 import * as d3Shape from 'd3-shape';
 
-import { POPULATION } from '../shared';
+import {POPULATION} from '../shared';
 
 @Component({
     selector: 'app-pie-chart',
@@ -58,10 +58,19 @@ export class PieChartComponent implements OnInit {
     private drawPie() {
         let g = this.svg.selectAll('.arc')
             .data(this.pie(POPULATION))
+            .attr('tabindex', 0)
+            .on('focus', function (d) {
+                d3.select(this)
+                    .attr('stroke', 'black')
+                    .attr('stroke-width', 2);
+            })
+            .attr('aria-describedby', (d, i) => `tooltip-${i}`)
             .enter().append('g')
             .attr('class', 'arc');
         g.append('path').attr('d', this.arc)
-            .style('fill', (d: any) => this.color(d.data.age) );
+            .style('fill', (d: any) => this.color(d.data.age))
+            .attr('tabindex', 0)
+            .attr('aria-describedby', (d, i) => `tooltip-${i}`);
         g.append('text').attr('transform', (d: any) => 'translate(' + this.labelArc.centroid(d) + ')')
             .attr('dy', '.35em')
             .text((d: any) => d.data.age);

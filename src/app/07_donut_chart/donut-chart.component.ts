@@ -1,10 +1,10 @@
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import {Component, ViewEncapsulation, OnInit} from '@angular/core';
 
 import * as d3 from 'd3-selection';
 import * as d3Scale from 'd3-scale';
 import * as d3Shape from 'd3-shape';
 
-import { POPULATION } from '../shared';
+import {POPULATION} from '../shared';
 
 @Component({
     selector: 'app-donut-chart',
@@ -29,7 +29,8 @@ export class DonutChartComponent implements OnInit {
 
     private g: any;
 
-    constructor() {}
+    constructor() {
+    }
 
     ngOnInit() {
         this.initSvg();
@@ -52,7 +53,7 @@ export class DonutChartComponent implements OnInit {
 
         this.pie = d3Shape.pie()
             .sort(null)
-            .value((d: any) => d.population);
+            .value((d: any) => d.population); // order
 
         this.svg = d3.select('svg')
             .append('g')
@@ -60,19 +61,60 @@ export class DonutChartComponent implements OnInit {
     }
 
     private drawChart(data: any[]) {
-        let g = this.svg.selectAll('.arc')
+
+        const g = this.svg.selectAll('.arc')
             .data(this.pie(data))
             .enter().append('g')
-            .attr('class', 'arc');
-
+            .attr('aria-label', (d, i) => `age-${d.data.age}`)
+            .attr('class', 'g');
         g.append('path')
             .attr('d', this.arc)
-            .style('fill', d => this.color(d.data.age));
+            .attr('tabindex', 0)
+            .style('fill', d => this.color(d.data.age))
+            .on('focus', function (d, i) {
+                d3.select(this)
+                    .attr('stroke', 'black')
+                    .attr('stroke-width', 3);
 
+                const {top, right, bottom, left} = d3.event
+                    .target.getBoundingClientRect();
+                d3.select(`#tooltip-${d}`);
+                g.append('text')
+                    .text(`${d.data.age} - $${d.data.population}`)
+                    .attr('transform',
+                        `translate(${(left + right) / 2} ${(top + bottom) / 2})`
+                    );
+            })
+            // .on('mousemove', (d, i) => {
+            //     const {clientX, clientY} = d3.event;
+            //     d3.select(`#tooltip-${i}`)
+            //         .attr('transform', `translate(${clientX} ${clientY})`);
+            // })
+            // .on('mouseenter', (d, i) => {
+            //     d3.select(`#tooltip-${i}`);
+            //     g.append('text')
+            //         .attr('transform', d => 'translate(' + this.arc.centroid(d) + ')')
+            //         .text(`${d.data.age} - $${d.data.population}`);
+            // })
+            // .on('mouseleave', (d, i) => {
+            //     d3.select(`#tooltip-${i} text`).remove();
+            // })
+            .on('blur', function (d, i) {
+                d3.select(this).attr('stroke', null); // delete border after move
+                d3.select(`#tooltip-${i} text`).remove();
+            });
         g.append('text')
             .attr('transform', d => 'translate(' + this.arc.centroid(d) + ')')
             .attr('dy', '.35em')
             .text(d => d.data.age);
-    }
 
+        // const tooltipGroup = this.svg.append('g').attr('class', 'tooltip');
+        //
+        // tooltipGroup
+        //     .selectAll('.tooltip-item')
+        //     .data(data)
+        //     .enter()
+        //     .append('g')
+        //     .attr('id', (d, i) => `tooltip-${i}`);
+    }
 }

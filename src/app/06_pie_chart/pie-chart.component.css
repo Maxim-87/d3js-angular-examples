@@ -6,3 +6,7 @@
 .arc path {
     stroke: #fff;
 }
+
+.arc:focus {
+    outline: none;
+}
