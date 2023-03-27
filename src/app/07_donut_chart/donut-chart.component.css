@@ -5,10 +5,6 @@
   text-anchor: middle;
 }
 
-.arc path {
-  stroke: #fff;
-}
-
 .g path:focus {
     outline: none;
 }
