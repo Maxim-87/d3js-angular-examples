@@ -6,7 +6,7 @@ import * as d3Shape from 'd3-shape';
 import * as d3Axis from 'd3-axis';
 import * as d3Array from 'd3-array';
 
-import { SAMPLE_DATA } from '../shared/data04';
+import { SAMPLE_DATA } from '../shared';
 
 export interface Margin {
     top: number;
@@ -68,7 +68,7 @@ export class StackedBarChartComponent implements OnInit {
 
     private drawChart(data: any[]) {
 
-        let keys = Object.getOwnPropertyNames(data[0]).slice(1);
+        const keys = Object.getOwnPropertyNames(data[0]).slice(1);
 
         data = data.map(v => {
             v.total = keys.map(key => v[key]).reduce((a, b) => a + b, 0);
@@ -88,14 +88,20 @@ export class StackedBarChartComponent implements OnInit {
             .selectAll('rect')
             .data(d => d)
             .enter().append('rect')
+
             .attr('x', d => this.x(d.data.State))
+            .attr('tabindex', 0)
             .attr('y', d => this.y(d[1]))
             .attr('height', d => this.y(d[0]) - this.y(d[1]))
+            .attr('tabindex', 0)
+
             .attr('width', this.x.bandwidth());
 
         this.g.append('g')
             .attr('class', 'axis')
             .attr('transform', 'translate(0,' + this.height + ')')
+            .attr('tabindex', 0)
+
             .call(d3Axis.axisBottom(this.x));
 
         this.g.append('g')
@@ -110,7 +116,7 @@ export class StackedBarChartComponent implements OnInit {
             .attr('text-anchor', 'start')
             .text('Population');
 
-        let legend = this.g.append('g')
+        const legend = this.g.append('g')
             .attr('font-family', 'sans-serif')
             .attr('font-size', 10)
             .attr('text-anchor', 'end')
@@ -129,6 +135,7 @@ export class StackedBarChartComponent implements OnInit {
             .attr('x', this.width - 24)
             .attr('y', 9.5)
             .attr('dy', '0.32em')
+            .attr('tabindex', 0)
             .text(d => d);
     }
 

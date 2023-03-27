@@ -1,11 +1,11 @@
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import {Component, ViewEncapsulation, OnInit} from '@angular/core';
 
 import * as d3 from 'd3-selection';
 import * as d3Scale from 'd3-scale';
 import * as d3Array from 'd3-array';
 import * as d3Axis from 'd3-axis';
 
-import { STATISTICS } from '../shared';
+import {STATISTICS} from '../shared';
 
 @Component({
     selector: 'app-bar-chart',
@@ -26,7 +26,8 @@ export class BarChartComponent implements OnInit {
     private svg: any;
     private g: any;
 
-    constructor() {}
+    constructor() {
+    }
 
     ngOnInit() {
         this.initSvg();
@@ -72,10 +73,21 @@ export class BarChartComponent implements OnInit {
             .data(STATISTICS)
             .enter().append('rect')
             .attr('class', 'bar')
-            .attr('x', (d) => this.x(d.letter) )
-            .attr('y', (d) => this.y(d.frequency) )
+            .attr('x', (d) => this.x(d.letter))
+            .attr('y', (d) => this.y(d.frequency))
             .attr('width', this.x.bandwidth())
-            .attr('height', (d) => this.height - this.y(d.frequency) );
+            .attr('height', (d) => this.height - this.y(d.frequency))
+            .attr('aria-label', (d) => `${d.letter} frequency ${(d.frequency * 100).toFixed(3)}%`)
+            .attr('role', 'figure')
+            .on('focus', function (d) {
+                d3.select(this)
+                    .attr('stroke', 'black')
+                    .attr('stroke-width', 3);
+            })
+            .on('blur', function (d, i) {
+                d3.select(this).attr('stroke', null); // delete border after move
+                d3.select(`#tooltip-${i} text`).remove();
+            });
     }
 
 }

@@ -35,7 +35,7 @@ export class PieChartComponent implements OnInit {
 
     ngOnInit() {
         this.initSvg();
-        this.drawPie();
+        this.drawPie(POPULATION);
     }
 
     private initSvg() {
@@ -55,8 +55,17 @@ export class PieChartComponent implements OnInit {
             .attr('transform', 'translate(' + this.width / 2 + ',' + this.height / 2 + ')');
     }
 
-    private drawPie() {
-        let g = this.svg.selectAll('.arc')
+    private drawPie(data: any) {
+        const keys = Object.getOwnPropertyNames(data[0]).slice(1);
+
+        data = data.map(v => {
+            v.total = keys.map(key => v[key]).reduce((a, b) => a + b, 0);
+            return v;
+        });
+        data.sort((a: any, b: any) => b.total - a.total);
+
+
+        const g = this.svg.selectAll('.arc')
             .data(this.pie(POPULATION))
             .attr('tabindex', 0)
             .on('focus', function (d) {
@@ -74,6 +83,27 @@ export class PieChartComponent implements OnInit {
         g.append('text').attr('transform', (d: any) => 'translate(' + this.labelArc.centroid(d) + ')')
             .attr('dy', '.35em')
             .text((d: any) => d.data.age);
+       // const legend =  g.append('g')
+       //     .attr('font-family', 'sans-serif')
+       //     .attr('font-size', 10)
+       //     .attr('text-anchor', 'end')
+       //     .selectAll('g')
+       //     .data(keys.slice().reverse())
+       //     .enter().append('g')
+       //     .attr('transform', (d, i) => 'translate(0,' + i * 20 + ')');
+       //
+       //  legend.append('rect')
+       //      .attr('x', this.width - 19)
+       //      .attr('width', 19)
+       //      .attr('height', 19);
+       //      // .attr('fill', this.z);
+       //
+       //  legend.append('text')
+       //      .attr('x', this.width - 24)
+       //      .attr('y', 9.5)
+       //      .attr('dy', '0.32em')
+       //      .text(d => d);
+
     }
 
 }
