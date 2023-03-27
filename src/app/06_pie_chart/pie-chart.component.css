@@ -1,13 +1,8 @@
-svg text {
-    font: 12px sans-serif;
+.g text {
+    font: 10px sans-serif;
     text-anchor: middle;
 }
 
-.arc path {
-    stroke: #fff;
-}
-
-g:focus {
+.g path:focus {
     outline: none;
 }
-
