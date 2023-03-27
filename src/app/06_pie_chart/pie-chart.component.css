@@ -1,5 +1,5 @@
-.arc text {
-    font: 10px sans-serif;
+svg text {
+    font: 12px sans-serif;
     text-anchor: middle;
 }
 
@@ -7,7 +7,7 @@
     stroke: #fff;
 }
 
-.arc:focus {
+g:focus {
     outline: none;
 }
 
