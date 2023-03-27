@@ -85,20 +85,6 @@ export class DonutChartComponent implements OnInit {
                         `translate(${(left + right) / 2} ${(top + bottom) / 2})`
                     );
             })
-            // .on('mousemove', (d, i) => {
-            //     const {clientX, clientY} = d3.event;
-            //     d3.select(`#tooltip-${i}`)
-            //         .attr('transform', `translate(${clientX} ${clientY})`);
-            // })
-            // .on('mouseenter', (d, i) => {
-            //     d3.select(`#tooltip-${i}`);
-            //     g.append('text')
-            //         .attr('transform', d => 'translate(' + this.arc.centroid(d) + ')')
-            //         .text(`${d.data.age} - $${d.data.population}`);
-            // })
-            // .on('mouseleave', (d, i) => {
-            //     d3.select(`#tooltip-${i} text`).remove();
-            // })
             .on('blur', function (d, i) {
                 d3.select(this).attr('stroke', null); // delete border after move
                 d3.select(`#tooltip-${i} text`).remove();
@@ -107,14 +93,5 @@ export class DonutChartComponent implements OnInit {
             .attr('transform', d => 'translate(' + this.arc.centroid(d) + ')')
             .attr('dy', '.35em')
             .text(d => d.data.age);
-
-        // const tooltipGroup = this.svg.append('g').attr('class', 'tooltip');
-        //
-        // tooltipGroup
-        //     .selectAll('.tooltip-item')
-        //     .data(data)
-        //     .enter()
-        //     .append('g')
-        //     .attr('id', (d, i) => `tooltip-${i}`);
     }
 }
