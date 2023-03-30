@@ -70,7 +70,7 @@ export class PieChartComponent implements OnInit {
             .attr('d', this.arc)
             .style('fill', (d: any) => this.color(d.data.age))
             .attr('tabindex', 0)
-            .attr('aria-label', (d: any) => `${d.data.age} age`)
+            .attr('aria-label', (d: any) => `${d.data.age} years`)
             .attr('role', 'graphics-symbol')
             .on('focus', function (d) {
                 d3.select(this)
@@ -80,7 +80,7 @@ export class PieChartComponent implements OnInit {
             .on('blur', function (d, i) {
                 d3.select(this).attr('stroke', null); // delete border after move
                 d3.select(`#tooltip-${i} text`).remove();
-            })
+            });
             // .attr('aria-describedby', (d, i) => `tooltip-${i}`);
         g.append('text').attr('transform', (d: any) => 'translate(' + this.labelArc.centroid(d) + ')')
             .attr('dy', '.35em')

@@ -65,7 +65,7 @@ export class DonutChartComponent implements OnInit {
         const g = this.svg.selectAll('.arc')
             .data(this.pie(data))
             .enter().append('g')
-            .attr('aria-label', (d, i) => `age-${d.data.age}`)
+            .attr('aria-label', (d, i) => `${d.data.age} years`)
             .attr('class', 'g');
         g.append('path')
             .attr('d', this.arc)

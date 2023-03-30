@@ -88,20 +88,18 @@ export class StackedBarChartComponent implements OnInit {
             .selectAll('rect')
             .data(d => d)
             .enter().append('rect')
+            // .attr('tabindex', 0)
 
             .attr('x', d => this.x(d.data.State))
-            .attr('tabindex', 0)
             .attr('y', d => this.y(d[1]))
             .attr('height', d => this.y(d[0]) - this.y(d[1]))
             .attr('tabindex', 0)
-
+            .attr('aria-label', (d: any) => `${d.data.State}, ${d} people`)
             .attr('width', this.x.bandwidth());
 
         this.g.append('g')
             .attr('class', 'axis')
             .attr('transform', 'translate(0,' + this.height + ')')
-            .attr('tabindex', 0)
-
             .call(d3Axis.axisBottom(this.x));
 
         this.g.append('g')

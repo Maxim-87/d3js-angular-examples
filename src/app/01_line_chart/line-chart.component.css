@@ -2,6 +2,11 @@
     font: 10px sans-serif;
 }
 
+.dot {
+    stroke: steelblue;
+    fill: lightblue;
+}
+
 .axis path,
 .axis line {
     fill: none;
@@ -11,7 +16,7 @@
 
 .axis-title {
     fill: none;
-    stroke: black;
+    stroke: green;
     stroke-width: 0.5px;
 }
 
@@ -22,6 +27,17 @@
 
 .line {
     fill: none;
+    stroke: cornflowerblue;
+    stroke-width: 1.5px;
+}
+
+.dot {
+    fill: steelblue;
     stroke: steelblue;
     stroke-width: 1.5px;
+}
+
+.tooltip {
+    text-decoration: underline;
+    stroke: black;
 }
