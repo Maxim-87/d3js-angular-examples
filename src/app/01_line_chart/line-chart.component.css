@@ -32,8 +32,7 @@
 }
 
 .dot {
-    fill: steelblue;
-    stroke: steelblue;
+    fill: red;
     stroke-width: 1.5px;
 }
 
