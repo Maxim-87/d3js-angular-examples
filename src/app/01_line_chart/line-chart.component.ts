@@ -75,22 +75,14 @@ export class LineChartComponent implements OnInit {
             .x((d: any) => this.x(d.date))
             .y((d: any) => this.y(d.value));
 
-    // this.svg.selectAll('.dot')
-    //         .data(STOCKS)
-    //         .enter();
-        //     .append('circle')
-        // .attr('class', 'dot')
-        //     .attr('cx', function(d) { return this.x(d.date); })
-        //     .attr('cy', function(d) { return this.y(d.value); })
-        //     .attr('r', 7);
-
         this.svg.selectAll(".dot")
             .data(STOCKS)
             .enter().append("circle")
             .attr("class", "dot")
             .attr("r", 3.5)
-            .attr("cx", this.x((d: any) => this.x(d.date)))
-            .attr("cy", this.y((d: any) => this.y(d.value)))
+            .attr("cx", (d: any) => this.x(d.date))
+            .attr("cy", (d: any) => this.y(d.value))
+            .attr('tabindex', 0)
 
         this.svg.append('path')
             .datum(STOCKS)
