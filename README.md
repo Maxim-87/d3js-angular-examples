@@ -29,11 +29,6 @@ To follow these examples you need to install [Node.js and npm](https://nodejs.or
 
 - Clone this repo into a new project folder.
 
- ```bash
- $ git clone https://github.com/datencia/d3js-angular-examples.git
- $ cd d3js-angular-examples
- ```
-
 - Install the npm packages described in the `package.json`:
 
  ```bash
