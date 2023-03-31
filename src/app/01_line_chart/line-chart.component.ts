@@ -83,18 +83,17 @@ export class LineChartComponent implements OnInit {
             .attr("cx", (d: any) => this.x(d.date))
             .attr("cy", (d: any) => this.y(d.value))
             .attr('tabindex', 0)
+            .attr('aria-label', (d) => d.value)
+
 
         this.svg.append('path')
             .datum(STOCKS)
             .attr('d', this.line)
-            .attr('tabindex', 0)
-            .attr('aria-describedby', (d, i) => `tooltip-${i}`)
             .on('mousemove', (d) => {
                 const {clientX, clientY} = d3.event;
                 d3.select(`.tooltip`)
                     .append('text')
-                    .attr('tabindex', 0)
-                    .text(`${d.value}`)
+                    .text((d: any) => d.value)
                     .attr('transform', `translate(${clientX - 200} ${clientY - 300})`);
             })
             .on('mouseleave', (d, i) => d3.select(`.tooltip text`).remove())
