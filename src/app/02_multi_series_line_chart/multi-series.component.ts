@@ -1,3 +1,4 @@
+/* tslint:disable */
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 
 import * as d3 from 'd3-selection';
@@ -7,7 +8,7 @@ import * as d3Shape from 'd3-shape';
 import * as d3Array from 'd3-array';
 import * as d3Axis from 'd3-axis';
 
-import { TEMPERATURES } from '../shared';
+import {STOCKS, TEMPERATURES} from '../shared';
 
 @Component({
     selector: 'app-multi-series-line-chart',
@@ -37,12 +38,13 @@ export class MultiSeriesComponent implements OnInit {
 
     ngOnInit() {
 
-        this.data = TEMPERATURES.map((v) => v.values.map((v) => v.date ))[0];
-        //.reduce((a, b) => a.concat(b), []);
+        this.data = TEMPERATURES.map((v) => v.values.map((v) => v.temperature ))[1]
+        // .reduce((a, b) => a.concat(b), []);
+        console.log('data =', this.data);
 
         this.initChart();
         this.drawAxis();
-        this.drawPath();
+        this.drawPath(TEMPERATURES);
     }
 
     private initChart(): void {
@@ -61,6 +63,7 @@ export class MultiSeriesComponent implements OnInit {
             .curve(d3Shape.curveBasis)
             .x( (d: any) => this.x(d.date) )
             .y( (d: any) => this.y(d.temperature) );
+
 
         this.x.domain(d3Array.extent(this.data, (d: Date) => d ));
 
@@ -89,24 +92,36 @@ export class MultiSeriesComponent implements OnInit {
             .text('Temperature, ºF');
     }
 
-    private drawPath(): void {
+    private drawPath(data:any): void {
         let city = this.g.selectAll('.city')
             .data(TEMPERATURES)
             .enter().append('g')
             .attr('class', 'city');
+
+        // city.selectAll(".dot")
+        //     .data(TEMPERATURES)
+        //     .enter().append("circle")
+        //     .attr("class", "dot")
+        //     .attr("r", 3.5)
+        //     .attr("cx", (d: any) => this.x(d.date))
+        //     .attr("cy", (d: any) => this.y(d.temperature))
+        //     .attr('tabindex', 0)
+        //     .attr('aria-label', (d) => d.date)
 
         city.append('path')
             .attr('class', 'line')
             .attr('d', (d) => this.line(d.values) )
             .style('stroke', (d) => this.z(d.id) );
 
+
+
         city.append('text')
             .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
             .attr('transform', (d) => 'translate(' + this.x(d.value.date) + ',' + this.y(d.value.temperature) + ')' )
             .attr('x', 3)
+            .attr('tabindex', 0)
             .attr('dy', '0.35em')
             .style('font', '10px sans-serif')
             .text(function(d) { return d.id; });
     }
-
 }
