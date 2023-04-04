@@ -7,3 +7,9 @@
     stroke: steelblue;
     stroke-width: 1.5px;
 }
+
+
+.dot {
+    fill: red;
+    stroke-width: 1.5px;
+}
