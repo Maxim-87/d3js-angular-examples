@@ -38,13 +38,13 @@ export class MultiSeriesComponent implements OnInit {
 
     ngOnInit() {
 
-        this.data = TEMPERATURES.map((v) => v.values.map((v) => v.temperature ))[1]
-        // .reduce((a, b) => a.concat(b), []);
+        this.data = TEMPERATURES.map((v) => v.values.map((v) => v.date ))
+        .reduce((a, b) => a.concat(b), []);
         console.log('data =', this.data);
 
         this.initChart();
         this.drawAxis();
-        this.drawPath(TEMPERATURES);
+        this.drawPath(this.data);
     }
 
     private initChart(): void {
@@ -98,22 +98,20 @@ export class MultiSeriesComponent implements OnInit {
             .enter().append('g')
             .attr('class', 'city');
 
-        // city.selectAll(".dot")
-        //     .data(TEMPERATURES)
-        //     .enter().append("circle")
-        //     .attr("class", "dot")
-        //     .attr("r", 3.5)
-        //     .attr("cx", (d: any) => this.x(d.date))
-        //     .attr("cy", (d: any) => this.y(d.temperature))
-        //     .attr('tabindex', 0)
-        //     .attr('aria-label', (d) => d.date)
+        city.selectAll(".dot")
+            .data(this.data)
+            .enter().append("circle")
+            .attr("class", "dot")
+            .attr("r", 3.5)
+            .attr("cx", (d: any) => this.x(d))
+            .attr("cy", (d: any) => this.y(85))
+            .attr('tabindex', 0)
+            .attr('aria-label', (d) => d.date)
 
         city.append('path')
             .attr('class', 'line')
             .attr('d', (d) => this.line(d.values) )
             .style('stroke', (d) => this.z(d.id) );
-
-
 
         city.append('text')
             .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
