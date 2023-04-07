@@ -1,5 +1,4 @@
-/* tslint:disable */
-import {Component, ViewEncapsulation, OnInit} from '@angular/core';
+import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 
 import * as d3 from 'd3-selection';
 import * as d3Scale from 'd3-scale';
@@ -7,7 +6,7 @@ import * as d3Shape from 'd3-shape';
 import * as d3Array from 'd3-array';
 import * as d3Axis from 'd3-axis';
 
-import {STOCKS} from '../shared';
+import { STOCKS } from '../shared';
 
 @Component({
     selector: 'app-line-chart',
@@ -19,7 +18,7 @@ export class LineChartComponent implements OnInit {
 
     title = 'Line Chart';
 
-    private margin = {top: 20, right: 20, bottom: 30, left: 50};
+    private margin = { top: 20, right: 20, bottom: 30, left: 50 };
     private width: number;
     private height: number;
     private x: any;
@@ -74,62 +73,31 @@ export class LineChartComponent implements OnInit {
         this.line = d3Shape.line()
             .x((d: any) => this.x(d.date))
             .y((d: any) => this.y(d.value));
+        const tooltip = d3.select('#lineChart').append('div').attr('class', 'tooltip').style('opacity', '0');
 
-        this.svg.selectAll(".dot")
+        this.svg.selectAll('.dot')
             .data(STOCKS)
-            .enter().append("circle")
-            .attr("class", "dot")
-            .attr("r", 3.5)
-            .attr("cx", (d: any) => this.x(d.date))
-            .attr("cy", (d: any) => this.y(d.value))
+            .enter().append('circle')
+            .attr('class', 'dot')
+            .attr('r', 3.5)
+            .attr('cx', (d: any) => this.x(d.date))
+            .attr('cy', (d: any) => this.y(d.value))
             .attr('tabindex', 0)
-            .attr('aria-label', (d) => d.value)
-
+            .attr('role', 'graphics-symbol')
+            .attr('aria-label', (d: any) => d.value)
+            .on('mouseover focus', function (d: any) {
+                tooltip.style('opacity', 1)
+                    .html('Date: ' + d.date + ' Value: ' + d.value)
+                    .style('left', (d3.event.pageX - 25) + 'px')
+                    .style('top', (d3.event.pageY - 75) + 'px');
+            })
+            .on('mouseout blur', function (d: any) {
+                tooltip.style('opacity', 0);
+            });
 
         this.svg.append('path')
             .datum(STOCKS)
             .attr('d', this.line)
-            .on('mousemove', (d) => {
-                const {clientX, clientY} = d3.event;
-                d3.select(`.tooltip`)
-                    .append('text')
-                    .text((d: any) => d.value)
-                    .attr('transform', `translate(${clientX - 200} ${clientY - 300})`);
-            })
-            .on('mouseleave', (d, i) => d3.select(`.tooltip text`).remove())
-            // .on('mouseenter', (d, i) => {
-            //     d3.select(`.tooltip`)
-            //         .append('text')
-            //         .text(`${d.value}`);
-            // })
-            // .on('focus', function(d, i) {
-            //     d3.select(this)
-            //         .attr('stroke', 'black')
-            //         .attr('stroke-width', 2);
-            //
-            //     const { top, right, bottom, left } = d3.event
-            //         .target.getBoundingClientRect();
-            //     d3.select(`.tooltip`)
-            //         .append('text')
-            //         .text(`${d.value}`)
-            //         .attr('transform',
-            //             `translate(${(left + right) / 2} ${(top + bottom) / 2})`
-            //         );
-            // })
-            .on('blur', function (d, i) {
-                d3.select(this).attr('stroke', null); // delete border after move
-                d3.select(`.text`).remove();
-            })
             .attr('class', 'line');
-
-        const tooltipGroup = this.svg.append('g').attr('class', 'tooltip');
-
-        tooltipGroup
-            .selectAll('.tooltip')
-            .data(STOCKS)
-            .enter()
-            .append('g')
-            .attr('id', (d, i) => `tooltip-${i}`);
-    } // draw line
-
+    }
 }

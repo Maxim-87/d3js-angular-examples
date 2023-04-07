@@ -2,11 +2,6 @@
     font: 10px sans-serif;
 }
 
-.dot {
-    stroke: steelblue;
-    fill: lightblue;
-}
-
 .axis path,
 .axis line {
     fill: none;
@@ -16,10 +11,9 @@
 
 .axis-title {
     fill: none;
-    stroke: green;
+    stroke: black;
     stroke-width: 0.5px;
 }
-
 
 .axis--x path {
     /*display: none;*/
@@ -32,11 +26,16 @@
 }
 
 .dot {
+    stroke: steelblue;
     fill: red;
     stroke-width: 1.5px;
 }
 
 .tooltip {
-    text-decoration: underline;
-    stroke: black;
+    position: absolute;
+    padding: 10px;
+    border-radius: 5px;
+    pointer-events: none;
+    background: #4fa0cc;
+    color: #fff;
 }
