@@ -83,6 +83,7 @@ export class LineChartComponent implements OnInit {
             .attr('cx', (d: any) => this.x(d.date))
             .attr('cy', (d: any) => this.y(d.value))
             .attr('tabindex', 0)
+            .attr('role', 'graphics-symbol')
             .attr('aria-label', (d: any) => d.value)
             .on('mouseover focus', function (d: any) {
                 tooltip.style('opacity', 1)
