@@ -69,6 +69,7 @@ export class BarChartComponent implements OnInit {
     }
 
     private drawBars() {
+        const tooltip = d3.select('#barChart').append('div').attr('class', 'tooltip').style('opacity', '0');
         this.g.selectAll('.bar')
             .data(STATISTICS)
             .enter().append('rect')
@@ -79,14 +80,26 @@ export class BarChartComponent implements OnInit {
             .attr('height', (d) => this.height - this.y(d.frequency))
             .attr('aria-label', (d) => `${d.letter} frequency ${(d.frequency * 100).toFixed(3)}%`)
             .attr('role', 'figure')
-            .on('focus', function (d) {
-                d3.select(this)
-                    .attr('stroke', 'black')
-                    .attr('stroke-width', 3);
+            // .on('focus', function (d) {
+            //     tooltip.style('opacity', 1)
+            //         .html('Date: ' + d.date + ' Value: ' + d.value)
+            //         .style('left', (d3.event.pageX - 25) + 'px')
+            //         .style('top', (d3.event.pageY - 75) + 'px');
+            //     d3.select(this)
+            //         .attr('stroke', 'black')
+            //         .attr('stroke-width', 3);
+            // })
+            // .on('blur', function (d, i) {
+            //     tooltip.style('opacity', 0);
+            // })
+            .on('mouseover focus', function (d: any) {
+                tooltip.style('opacity', 1)
+                    .html('Letter: ' + d.letter + ' Frequency: ' + d.frequency)
+                    .style('left', (d3.event.pageX - 150) + 'px')
+                    .style('top', (d3.event.pageY - 250) + 'px');
             })
-            .on('blur', function (d, i) {
-                d3.select(this).attr('stroke', null); // delete border after move
-                d3.select(`#tooltip-${i} text`).remove();
+            .on('mouseout blur', function (d: any) {
+                tooltip.style('opacity', 0);
             });
     }
 

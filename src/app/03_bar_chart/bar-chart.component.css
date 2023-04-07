@@ -11,3 +11,12 @@
     stroke: black;
     stroke-width: 0.5px;
 }
+
+.tooltip {
+    position: absolute;
+    padding: 10px;
+    border-radius: 5px;
+    pointer-events: none;
+    background: #4fa0cc;
+    color: #fff;
+}
