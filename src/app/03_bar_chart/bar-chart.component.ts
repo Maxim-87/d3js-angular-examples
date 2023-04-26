@@ -80,18 +80,6 @@ export class BarChartComponent implements OnInit {
             .attr('height', (d) => this.height - this.y(d.frequency))
             .attr('aria-label', (d) => `${d.letter} frequency ${(d.frequency * 100).toFixed(3)}%`)
             .attr('role', 'figure')
-            // .on('focus', function (d) {
-            //     tooltip.style('opacity', 1)
-            //         .html('Date: ' + d.date + ' Value: ' + d.value)
-            //         .style('left', (d3.event.pageX - 25) + 'px')
-            //         .style('top', (d3.event.pageY - 75) + 'px');
-            //     d3.select(this)
-            //         .attr('stroke', 'black')
-            //         .attr('stroke-width', 3);
-            // })
-            // .on('blur', function (d, i) {
-            //     tooltip.style('opacity', 0);
-            // })
             .on('mouseover focus', function (d: any) {
                 tooltip.style('opacity', 1)
                     .html('Letter: ' + d.letter + ' Frequency: ' + d.frequency)
