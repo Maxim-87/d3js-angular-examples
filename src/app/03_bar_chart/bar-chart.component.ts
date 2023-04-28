@@ -53,12 +53,12 @@ export class BarChartComponent implements OnInit {
 
     private drawAxis() {
         this.g.append('g')
-            .attr('class', 'axis axis--x')
+            .attr('class', 'axis--x')
             .attr('transform', 'translate(0,' + this.height + ')')
             .call(d3Axis.axisBottom(this.x));
         this.g.append('g')
-            .attr('class', 'axis axis--y')
-            .call(d3Axis.axisLeft(this.y).ticks(10, '%'))
+            .attr('class', 'axis--y')
+            .call(d3Axis.axisLeft(this.y).ticks(10, '%')) // count of ticks
             .append('text')
             .attr('class', 'axis-title')
             .attr('transform', 'rotate(-90)')
@@ -90,5 +90,4 @@ export class BarChartComponent implements OnInit {
                 tooltip.style('opacity', 0);
             });
     }
-
 }
