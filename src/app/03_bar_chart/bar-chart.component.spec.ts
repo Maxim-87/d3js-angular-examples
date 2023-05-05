@@ -18,7 +18,6 @@ describe('Test bar-chart', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(BarChartComponent);
         component = fixture.componentInstance;
-        component.ngOnInit();
         fixture.detectChanges();
     });
 
@@ -27,7 +26,7 @@ describe('Test bar-chart', () => {
     });
 
     afterEach(function () {
-        // d3.selectAll('svg').remove();
+        d3.selectAll('svg').remove();
     });
 
     describe('the initialize svg element', () => {
@@ -38,7 +37,9 @@ describe('Test bar-chart', () => {
         });
 
         function getSvg() {
-            return d3.select('svg');
+            const sV = d3.select('svg');
+            console.log(sV);
+            return sV;
         }
     });
 
@@ -47,11 +48,17 @@ describe('Test bar-chart', () => {
         expect(compiled.querySelector('h1').textContent).toContain('Bar Chart');
     });
 
-    // it('should render a bar chart', () => {
-    //     const bars = fixture.nativeElement.querySelectorAll('.bar');
-    //     console.log(STATISTICS.length);
-    //     expect(bars.length).toEqual(STATISTICS.length);
-    // });
+    it('should render a bar chart', () => {
+        const bars = fixture.nativeElement.querySelectorAll('.bar');
+        console.log(STATISTICS.length);
+        expect(bars.length).toEqual(STATISTICS.length);
+    });
+
+    it('should render correct amount of bar charts', () => {
+        const bars = fixture.nativeElement.querySelectorAll('rect');
+        console.log(STATISTICS.length, bars);
+        expect(bars.length).toEqual(STATISTICS.length);
+    });
 
     it('should have correct x-axis labels', () => {
         const xAxisTicks = d3.select('.axis--x').selectAll('.tick').nodes();
@@ -61,14 +68,12 @@ describe('Test bar-chart', () => {
         }
     });
 
-    // it('should have correct y-axis labels', () => {
-    //     const yAxisLabels = fixture.nativeElement.querySelectorAll('.axis--y');
-    //     const maxFrequency = Math.max(...STATISTICS.map((statistic) => statistic.frequency));
-    //     console.log(yAxisLabels);
-    //     expect(yAxisLabels.length).toBeGreaterThan(1);
-    //     expect(yAxisLabels[0].textContent).toEqual('0%');
-    //     expect(yAxisLabels[yAxisLabels.length - 1].textContent).toEqual(`${maxFrequency * 100}%`);
-    // });
+    it('should have correct y-axis labels', () => {
+        const yAxisLabels = d3.select('.axis--y').selectAll('.tick').nodes();
+        expect(yAxisLabels.length).toEqual(13);
+        expect(yAxisLabels[0].textContent).toEqual('0%');
+        expect(yAxisLabels[yAxisLabels.length - 1].textContent).toEqual('12%');
+    });
 
     it('should show tooltip on mouseover', () => {
         const bar = fixture.nativeElement.querySelector('.bar');
